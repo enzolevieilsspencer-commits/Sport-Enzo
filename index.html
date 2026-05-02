@@ -4,7 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Programme sport et nutrition — Enzo">
-<meta name="theme-color" content="#0D0D0D">
+<meta name="theme-color" content="#0D0D0D" id="meta-theme-color">
+<script>
+(function () {
+  try {
+    if (localStorage.getItem('sportTheme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      var m = document.getElementById('meta-theme-color');
+      if (m) m.setAttribute('content', '#E8E8DE');
+    }
+  } catch (e) {}
+})();
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,6 +30,7 @@
   --bg2: #141414;
   --bg3: #1C1C1C;
   --accent: #E8FF47;
+  --accent-display: #E8FF47;
   --accent2: #B8CC20;
   --accent-dim: rgba(232,255,71,0.07);
   --accent-border: rgba(232,255,71,0.2);
@@ -29,6 +41,54 @@
   --blue: #47D4FF;
   --orange: #FF8C47;
   --purple: #B847FF;
+  --text-on-accent: #0d0d0d;
+  --text-on-gym-tab: #ffffff;
+  --badge-gym-bg: rgba(255,71,71,0.1);
+  --badge-gym-border: rgba(255,71,71,0.25);
+  --grad-priority-1: rgba(232,255,71,0.06);
+  --grad-priority-2: rgba(232,255,71,0.02);
+  --day-hover-accent: rgba(232,255,71,0.3);
+  --exo-priority-bg: rgba(232,255,71,0.04);
+  --exo-gym-priority-bg: rgba(255,71,71,0.04);
+  --trans-bg: rgba(255,71,71,0.06);
+  --trans-border: rgba(255,71,71,0.2);
+  --welcome-glow-1: rgba(232,255,71,0.14);
+  --welcome-glow-2: rgba(71,212,255,0.06);
+  --welcome-blur: 6px;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #e8e8de;
+  --bg2: #fafaf6;
+  --bg3: #deded4;
+  --accent: #5c6500;
+  --accent-display: #8a9400;
+  --accent2: #4a5200;
+  --accent-dim: rgba(92,101,0,0.1);
+  --accent-border: rgba(92,101,0,0.28);
+  --white: #141414;
+  --gray: #5a5a52;
+  --gray2: #c4c4b8;
+  --red: #d62828;
+  --blue: #0077a8;
+  --orange: #c45f00;
+  --purple: #7c2fb8;
+  --text-on-accent: #141414;
+  --text-on-gym-tab: #ffffff;
+  --badge-gym-bg: rgba(214,40,40,0.1);
+  --badge-gym-border: rgba(214,40,40,0.28);
+  --grad-priority-1: rgba(92,101,0,0.08);
+  --grad-priority-2: rgba(92,101,0,0.02);
+  --day-hover-accent: rgba(138,148,0,0.45);
+  --exo-priority-bg: rgba(92,101,0,0.08);
+  --exo-gym-priority-bg: rgba(214,40,40,0.06);
+  --trans-bg: rgba(214,40,40,0.08);
+  --trans-border: rgba(214,40,40,0.22);
+  --welcome-glow-1: rgba(138,148,0,0.18);
+  --welcome-glow-2: rgba(0,119,168,0.08);
+  --welcome-blur: 4px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,6 +99,41 @@ body {
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--gray2);
+  background: var(--bg2);
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+html[data-theme="light"] .theme-toggle {
+  box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+}
+.theme-toggle:hover {
+  border-color: var(--accent-border);
+  transform: scale(1.04);
+}
+.theme-toggle:active { transform: scale(0.96); }
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-display);
+  outline-offset: 2px;
 }
 
 /* HERO */
@@ -64,7 +159,7 @@ body {
 }
 
 .hero-title .line1 { color: var(--white); display: block; }
-.hero-title .line2 { color: var(--accent); display: block; }
+.hero-title .line2 { color: var(--accent-display); display: block; }
 
 .hero-sub {
   font-size: 0.88rem;
@@ -114,7 +209,7 @@ body {
 
 .stat { flex: 1; padding: 16px 12px; border-right: 1px solid var(--gray2); text-align: center; }
 .stat:last-child { border-right: none; }
-.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--accent); line-height: 1; display: block; }
+.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--accent-display); line-height: 1; display: block; }
 .stat-label { font-size: 0.65rem; color: var(--gray); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
 
 /* TABS */
@@ -152,8 +247,8 @@ body {
   font-weight: 300;
 }
 
-.tab-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
-.tab-btn.gym.active { background: var(--red); border-color: var(--red); color: #fff; }
+.tab-btn.active { background: var(--accent-display); border-color: var(--accent-display); color: var(--text-on-accent); }
+.tab-btn.gym.active { background: var(--red); border-color: var(--red); color: var(--text-on-gym-tab); }
 
 /* MAIN */
 .main { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
@@ -197,11 +292,11 @@ body {
 }
 
 .badge-cali { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
-.badge-gym { background: rgba(255,71,71,0.1); color: var(--red); border: 1px solid rgba(255,71,71,0.25); }
+.badge-gym { background: var(--badge-gym-bg); color: var(--red); border: 1px solid var(--badge-gym-border); }
 
 /* PRIORITY BANNER */
 .priority-banner {
-  background: linear-gradient(135deg, rgba(232,255,71,0.06), rgba(232,255,71,0.02));
+  background: linear-gradient(135deg, var(--grad-priority-1), var(--grad-priority-2));
   border: 1px solid var(--accent-border);
   border-radius: 8px;
   padding: 16px 18px;
@@ -211,7 +306,7 @@ body {
   line-height: 1.6;
 }
 
-.priority-banner strong { color: var(--accent); }
+.priority-banner strong { color: var(--accent-display); }
 
 /* SECTION TITLE */
 .section-title {
@@ -237,7 +332,7 @@ body {
   transition: border-color 0.2s;
 }
 
-.day:hover:not(.rest-day) { border-color: rgba(232,255,71,0.3); }
+.day:hover:not(.rest-day) { border-color: var(--day-hover-accent); }
 
 .day-hd {
   display: flex;
@@ -251,7 +346,7 @@ body {
 .rest-day .day-hd { cursor: default; opacity: 0.4; }
 
 .day-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.dot-push { background: var(--accent); }
+.dot-push { background: var(--accent-display); }
 .dot-pull { background: var(--blue); }
 .dot-legs { background: var(--orange); }
 .dot-hiit { background: var(--purple); }
@@ -262,7 +357,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 0.6rem;
   letter-spacing: 0.15em;
-  color: var(--accent);
+  color: var(--accent-display);
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);
   padding: 2px 7px;
@@ -274,7 +369,7 @@ body {
 .day-type { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
 .day-wd { font-size: 0.68rem; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
 .day-arrow { color: var(--gray2); font-size: 0.85rem; transition: transform 0.25s; }
-.day.open .day-arrow { transform: rotate(180deg); color: var(--accent); }
+.day.open .day-arrow { transform: rotate(180deg); color: var(--accent-display); }
 
 /* EXERCISES */
 .exos { display: none; flex-direction: column; padding: 0 16px 14px; gap: 7px; }
@@ -300,25 +395,25 @@ body {
 }
 
 .exo.priority-exo {
-  border-left: 2px solid var(--accent);
-  background: rgba(232,255,71,0.04);
+  border-left: 2px solid var(--accent-display);
+  background: var(--exo-priority-bg);
 }
 
 .exo.gym-exo.priority-exo {
   border-left: 2px solid var(--red);
-  background: rgba(255,71,71,0.04);
+  background: var(--exo-gym-priority-bg);
 }
 
 .exo-left { flex: 1; }
 .exo-name { font-size: 0.9rem; font-weight: 600; color: var(--white); }
 .exo-tip { font-size: 0.76rem; color: var(--gray); margin-top: 2px; font-style: italic; }
-.exo-sets { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent); white-space: nowrap; letter-spacing: 0.04em; }
+.exo-sets { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent-display); white-space: nowrap; letter-spacing: 0.04em; }
 .exo-sets.red { color: var(--red); }
 
 /* TRANSITION NOTE */
 .trans-note {
-  background: rgba(255,71,71,0.06);
-  border: 1px solid rgba(255,71,71,0.2);
+  background: var(--trans-bg);
+  border: 1px solid var(--trans-border);
   border-radius: 8px;
   padding: 14px 16px;
   margin-bottom: 18px;
@@ -336,19 +431,19 @@ body {
   padding: 18px;
   margin-bottom: 18px;
 }
-.suppl-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; }
+.suppl-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--accent-display); letter-spacing: 0.1em; margin-bottom: 14px; }
 .suppl-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--gray2); gap: 8px; }
 .suppl-row:last-child { border-bottom: none; }
 .suppl-name { font-weight: 600; font-size: 0.9rem; }
 .suppl-when { font-size: 0.76rem; color: var(--gray); font-style: italic; flex: 1; padding-left: 8px; }
-.suppl-dose { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent); }
+.suppl-dose { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent-display); }
 
 .nutri-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
 .nutri-card { background: var(--bg2); border: 1px solid var(--gray2); border-radius: 8px; padding: 16px; }
-.nutri-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 10px; }
+.nutri-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; color: var(--accent-display); letter-spacing: 0.1em; margin-bottom: 10px; }
 .nutri-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .nutri-card li { font-size: 0.83rem; color: var(--gray); padding-left: 14px; position: relative; line-height: 1.4; }
-.nutri-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.68rem; top: 2px; }
+.nutri-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent-display); font-size: 0.68rem; top: 2px; }
 
 .macro-block { background: var(--bg2); border: 1px solid var(--gray2); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
 .macro-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--white); margin-bottom: 14px; }
@@ -357,7 +452,7 @@ body {
 .macro-label span:last-child { color: var(--white); font-weight: 600; }
 .bar-bg { height: 5px; background: var(--gray2); border-radius: 3px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 3px; }
-.bar-p { background: var(--accent); width: 40%; }
+.bar-p { background: var(--accent-display); width: 40%; }
 .bar-g { background: var(--blue); width: 37%; }
 .bar-f { background: var(--orange); width: 23%; }
 .macro-note { font-size: 0.76rem; color: var(--gray); font-style: italic; margin-top: 10px; line-height: 1.5; }
@@ -386,8 +481,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: max(24px, env(safe-area-inset-top)) 28px max(24px, env(safe-area-inset-bottom));
-  background: radial-gradient(ellipse 85% 55% at 50% 18%, rgba(232,255,71,0.14) 0%, transparent 52%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(71,212,255,0.06) 0%, transparent 45%),
+  background: radial-gradient(ellipse 85% 55% at 50% 18%, var(--welcome-glow-1) 0%, transparent 52%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, var(--welcome-glow-2) 0%, transparent 45%),
     var(--bg);
   cursor: pointer;
   transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease;
@@ -397,7 +492,7 @@ body {
 #welcome-splash.welcome-exit {
   opacity: 0;
   transform: scale(1.03);
-  filter: blur(6px);
+  filter: blur(var(--welcome-blur));
   pointer-events: none;
 }
 .welcome-inner {
@@ -415,7 +510,7 @@ body {
   transform: translateY(28px);
   animation: welcomeIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
 }
-.welcome-line1 .accent { color: var(--accent); }
+.welcome-line1 .accent { color: var(--accent-display); }
 .welcome-line2 {
   margin-top: 16px;
   font-size: clamp(1rem, 3.6vw, 1.2rem);
@@ -430,7 +525,7 @@ body {
   height: 3px;
   width: 0;
   margin: 24px auto 0;
-  background: linear-gradient(90deg, var(--accent), var(--blue));
+  background: linear-gradient(90deg, var(--accent-display), var(--blue));
   border-radius: 2px;
   max-width: 140px;
   animation: welcomeBar 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.32s forwards;
@@ -470,6 +565,8 @@ body {
 </head>
 <body>
 
+<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Activer le thème clair" title="Thème clair / sombre">☀️</button>
+
 <div id="welcome-splash" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-sub" hidden>
   <div class="welcome-inner">
     <p class="welcome-line1" id="welcome-title">Bienvenue, <span class="accent">Enzo</span></p>
@@ -485,7 +582,7 @@ body {
     <span class="line1">PROGRAMME</span>
     <span class="line2">ENZO V2</span>
   </h1>
-  <p class="hero-sub">Basé sur l'analyse de tes photos : priorité absolue sur la <strong style="color:var(--accent)">poitrine</strong>, les <strong style="color:var(--accent)">épaules</strong> et le <strong style="color:var(--accent)">V-taper</strong> pour transformer ta silhouette.</p>
+  <p class="hero-sub">Basé sur l'analyse de tes photos : priorité absolue sur la <strong style="color:var(--accent-display)">poitrine</strong>, les <strong style="color:var(--accent-display)">épaules</strong> et le <strong style="color:var(--accent-display)">V-taper</strong> pour transformer ta silhouette.</p>
 
   <div class="analysis">
     <div class="analysis-col plus">
@@ -546,7 +643,7 @@ body {
         <div class="day-hd">
           <div class="day-dot dot-push"></div>
           <div class="day-info">
-            <div class="day-name">Poitrine Focus <span style="font-size:0.7rem;color:var(--accent)">★ PRIORITÉ</span></div>
+            <div class="day-name">Poitrine Focus <span style="font-size:0.7rem;color:var(--accent-display)">★ PRIORITÉ</span></div>
             <div class="day-type">Push A — Lundi</div>
           </div>
           <span class="day-wd">LUN</span>
@@ -614,7 +711,7 @@ body {
         <div class="day-hd">
           <div class="day-dot dot-push"></div>
           <div class="day-info">
-            <div class="day-name">Épaules Spéciale <span style="font-size:0.7rem;color:var(--accent)">★ PRIORITÉ</span></div>
+            <div class="day-name">Épaules Spéciale <span style="font-size:0.7rem;color:var(--accent-display)">★ PRIORITÉ</span></div>
             <div class="day-type">Push B — Jeudi · NOUVEAU</div>
           </div>
           <span class="day-wd">JEU</span>
@@ -960,6 +1057,42 @@ function tog(card) {
   if (card.classList.contains('rest-day')) return;
   card.classList.toggle('open');
 }
+
+(function () {
+  var btn = document.getElementById('theme-toggle');
+  var meta = document.getElementById('meta-theme-color');
+  function getTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+  function syncButtonAndMeta() {
+    var t = getTheme();
+    if (meta) meta.setAttribute('content', t === 'light' ? '#E8E8DE' : '#0D0D0D');
+    if (btn) {
+      if (t === 'light') {
+        btn.textContent = '🌙';
+        btn.setAttribute('aria-label', 'Activer le thème sombre');
+        btn.setAttribute('title', 'Thème sombre');
+      } else {
+        btn.textContent = '☀️';
+        btn.setAttribute('aria-label', 'Activer le thème clair');
+        btn.setAttribute('title', 'Thème clair');
+      }
+    }
+  }
+  function toggleTheme() {
+    var next = getTheme() === 'light' ? 'dark' : 'light';
+    try {
+      if (next === 'light') localStorage.setItem('sportTheme', 'light');
+      else localStorage.removeItem('sportTheme');
+    } catch (e) {}
+    if (next === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    syncButtonAndMeta();
+  }
+  syncButtonAndMeta();
+  if (btn) btn.addEventListener('click', toggleTheme);
+})();
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () {});
