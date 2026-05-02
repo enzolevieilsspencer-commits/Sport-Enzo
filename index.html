@@ -21,6 +21,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Programme Sport">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="48x48" href="icons/icon-48.png">
@@ -140,6 +142,57 @@ html[data-theme="light"] .theme-toggle {
   outline: 2px solid var(--accent-display);
   outline-offset: 2px;
 }
+
+.update-toast {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg2);
+  border: 1px solid var(--gray2);
+  box-shadow: 0 10px 34px rgba(0,0,0,0.22);
+}
+html[data-theme="light"] .update-toast {
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+}
+.update-toast.show { display: flex; }
+.update-toast p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--white);
+  line-height: 1.35;
+}
+.update-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.update-btn {
+  border: 1px solid var(--accent-border);
+  background: var(--accent-display);
+  color: var(--text-on-accent);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.update-btn:active { transform: scale(0.97); }
+.update-dismiss {
+  border: 1px solid var(--gray2);
+  background: transparent;
+  color: var(--gray);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.update-dismiss:active { transform: scale(0.97); }
 
 /* HERO */
 .hero {
@@ -571,6 +624,14 @@ html[data-theme="light"] .theme-toggle {
 <body>
 
 <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Activer le thème clair" title="Thème clair / sombre">☀️</button>
+
+<div class="update-toast" id="update-toast" role="status" aria-live="polite">
+  <p>Nouvelle version disponible.</p>
+  <div class="update-actions">
+    <button class="update-btn" id="update-apply" type="button">Mettre à jour</button>
+    <button class="update-dismiss" id="update-dismiss" type="button" aria-label="Ignorer la mise à jour">Plus tard</button>
+  </div>
+</div>
 
 <div id="welcome-splash" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-sub" hidden>
   <div class="welcome-inner">
@@ -1100,7 +1161,38 @@ function tog(card) {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () {});
+    var toast = document.getElementById('update-toast');
+    var apply = document.getElementById('update-apply');
+    var dismiss = document.getElementById('update-dismiss');
+    var reloading = false;
+    function showUpdate(reg) {
+      if (!toast) return;
+      toast.classList.add('show');
+      if (dismiss) dismiss.onclick = function () { toast.classList.remove('show'); };
+      if (apply) apply.onclick = function () {
+        toast.classList.remove('show');
+        if (reg && reg.waiting) {
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+      };
+    }
+    navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
+      if (reg.waiting && navigator.serviceWorker.controller) showUpdate(reg);
+      reg.addEventListener('updatefound', function () {
+        var sw = reg.installing;
+        if (!sw) return;
+        sw.addEventListener('statechange', function () {
+          if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdate(reg);
+          }
+        });
+      });
+    }).catch(function () {});
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
   });
 }
 

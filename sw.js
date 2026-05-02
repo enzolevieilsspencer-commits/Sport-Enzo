@@ -1,4 +1,4 @@
-const CACHE = 'programme-sport-v3';
+const CACHE = 'programme-sport-v4';
 
 function precacheUrls() {
   const root = new URL('.', self.location).href;
@@ -25,10 +25,16 @@ function isMainDocument(request) {
 }
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE).then((cache) => cache.addAll(precacheUrls()))
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (!event.data) return;
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {
