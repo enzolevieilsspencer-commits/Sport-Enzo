@@ -1,4 +1,4 @@
-const CACHE = 'programme-sport-v2';
+const CACHE = 'programme-sport-v3';
 
 function precacheUrls() {
   const root = new URL('.', self.location).href;
@@ -8,6 +8,9 @@ function precacheUrls() {
     new URL('icons/icon-192.png', root).href,
     new URL('icons/icon-512.png', root).href,
     new URL('icons/icon-180.png', root).href,
+    new URL('icons/icon-48.png', root).href,
+    new URL('icons/icon-32.png', root).href,
+    new URL('icons/icon-16.png', root).href,
   ];
 }
 
