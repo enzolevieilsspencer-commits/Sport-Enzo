@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Programme sport et nutrition — Enzo">
+<meta name="theme-color" content="#0D0D0D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Programme Sport">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Programme Ajusté — Enzo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D0D0D;
+  --bg2: #141414;
+  --bg3: #1C1C1C;
+  --accent: #E8FF47;
+  --accent2: #B8CC20;
+  --accent-dim: rgba(232,255,71,0.07);
+  --accent-border: rgba(232,255,71,0.2);
+  --white: #F0F0F0;
+  --gray: #666;
+  --gray2: #333;
+  --red: #FF4747;
+  --blue: #47D4FF;
+  --orange: #FF8C47;
+  --purple: #B847FF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+  padding: 48px 24px 36px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.4em;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 11vw, 6.5rem);
+  line-height: 0.88;
+  margin-bottom: 16px;
+}
+
+.hero-title .line1 { color: var(--white); display: block; }
+.hero-title .line2 { color: var(--accent); display: block; }
+
+.hero-sub {
+  font-size: 0.88rem;
+  color: var(--gray);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 460px;
+  margin-bottom: 28px;
+}
+
+/* ANALYSIS BANNER */
+.analysis {
+  background: var(--bg2);
+  border: 1px solid var(--gray2);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.analysis-col h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+}
+
+.analysis-col.plus h3 { color: var(--accent); }
+.analysis-col.focus h3 { color: var(--red); }
+
+.analysis-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.analysis-col li { font-size: 0.82rem; color: var(--gray); padding-left: 16px; position: relative; line-height: 1.4; }
+.plus li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+.focus li::before { content: '→'; position: absolute; left: 0; color: var(--red); font-size: 0.75rem; }
+
+/* STATS */
+.stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--gray2);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 36px;
+}
+
+.stat { flex: 1; padding: 16px 12px; border-right: 1px solid var(--gray2); text-align: center; }
+.stat:last-child { border-right: none; }
+.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--accent); line-height: 1; display: block; }
+.stat-label { font-size: 0.65rem; color: var(--gray); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
+
+/* TABS */
+.tabs {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 13px 8px;
+  border: 1px solid var(--gray2);
+  background: transparent;
+  color: var(--gray);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.2;
+}
+
+.tab-btn small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+  opacity: 0.6;
+  font-weight: 300;
+}
+
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
+.tab-btn.gym.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* MAIN */
+.main { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeup 0.3s ease; }
+
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PHASE HEADER */
+.phase-hd {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--gray2);
+  margin-bottom: 22px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.phase-hd h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.phase-hd p { font-size: 0.86rem; color: var(--gray); font-style: italic; line-height: 1.5; max-width: 380px; }
+
+.badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  padding: 5px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.badge-cali { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.badge-gym { background: rgba(255,71,71,0.1); color: var(--red); border: 1px solid rgba(255,71,71,0.25); }
+
+/* PRIORITY BANNER */
+.priority-banner {
+  background: linear-gradient(135deg, rgba(232,255,71,0.06), rgba(232,255,71,0.02));
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.priority-banner strong { color: var(--accent); }
+
+/* SECTION TITLE */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin: 26px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--gray2); }
+
+/* WEEK */
+.week { display: flex; flex-direction: column; gap: 9px; }
+
+.day {
+  border: 1px solid var(--gray2);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.day:hover:not(.rest-day) { border-color: rgba(232,255,71,0.3); }
+
+.day-hd {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  cursor: pointer;
+  background: var(--bg2);
+}
+
+.rest-day .day-hd { cursor: default; opacity: 0.4; }
+
+.day-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-push { background: var(--accent); }
+.dot-pull { background: var(--blue); }
+.dot-legs { background: var(--orange); }
+.dot-hiit { background: var(--purple); }
+.dot-rest { background: var(--gray2); }
+
+/* Priority badge on day */
+.day-priority {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.day-info { flex: 1; }
+.day-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; color: var(--white); letter-spacing: 0.04em; line-height: 1; }
+.day-type { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
+.day-wd { font-size: 0.68rem; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
+.day-arrow { color: var(--gray2); font-size: 0.85rem; transition: transform 0.25s; }
+.day.open .day-arrow { transform: rotate(180deg); color: var(--accent); }
+
+/* EXERCISES */
+.exos { display: none; flex-direction: column; padding: 0 16px 14px; gap: 7px; }
+.day.open .exos { display: flex; }
+
+.exo-group-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--gray);
+  padding-top: 10px;
+  padding-left: 2px;
+}
+
+.exo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 9px 12px;
+  background: var(--bg3);
+  border-radius: 6px;
+  gap: 10px;
+}
+
+.exo.priority-exo {
+  border-left: 2px solid var(--accent);
+  background: rgba(232,255,71,0.04);
+}
+
+.exo.gym-exo.priority-exo {
+  border-left: 2px solid var(--red);
+  background: rgba(255,71,71,0.04);
+}
+
+.exo-left { flex: 1; }
+.exo-name { font-size: 0.9rem; font-weight: 600; color: var(--white); }
+.exo-tip { font-size: 0.76rem; color: var(--gray); margin-top: 2px; font-style: italic; }
+.exo-sets { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent); white-space: nowrap; letter-spacing: 0.04em; }
+.exo-sets.red { color: var(--red); }
+
+/* TRANSITION NOTE */
+.trans-note {
+  background: rgba(255,71,71,0.06);
+  border: 1px solid rgba(255,71,71,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-size: 0.86rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+.trans-note strong { color: var(--red); }
+
+/* NUTRITION */
+.suppl-block {
+  background: var(--bg2);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.suppl-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; }
+.suppl-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--gray2); gap: 8px; }
+.suppl-row:last-child { border-bottom: none; }
+.suppl-name { font-weight: 600; font-size: 0.9rem; }
+.suppl-when { font-size: 0.76rem; color: var(--gray); font-style: italic; flex: 1; padding-left: 8px; }
+.suppl-dose { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; color: var(--accent); }
+
+.nutri-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.nutri-card { background: var(--bg2); border: 1px solid var(--gray2); border-radius: 8px; padding: 16px; }
+.nutri-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 10px; }
+.nutri-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.nutri-card li { font-size: 0.83rem; color: var(--gray); padding-left: 14px; position: relative; line-height: 1.4; }
+.nutri-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.68rem; top: 2px; }
+
+.macro-block { background: var(--bg2); border: 1px solid var(--gray2); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+.macro-block h3 { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--white); margin-bottom: 14px; }
+.macro-row { margin-bottom: 12px; }
+.macro-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--gray); margin-bottom: 5px; }
+.macro-label span:last-child { color: var(--white); font-weight: 600; }
+.bar-bg { height: 5px; background: var(--gray2); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; }
+.bar-p { background: var(--accent); width: 40%; }
+.bar-g { background: var(--blue); width: 37%; }
+.bar-f { background: var(--orange); width: 23%; }
+.macro-note { font-size: 0.76rem; color: var(--gray); font-style: italic; margin-top: 10px; line-height: 1.5; }
+
+.meal-list { display: flex; flex-direction: column; gap: 9px; }
+.meal { display: flex; gap: 12px; align-items: flex-start; padding: 13px; background: var(--bg2); border: 1px solid var(--gray2); border-radius: 8px; }
+.meal-icon { font-size: 1.2rem; min-width: 28px; }
+.meal h4 { font-weight: 600; font-size: 0.88rem; color: var(--white); margin-bottom: 3px; }
+.meal p { font-size: 0.8rem; color: var(--gray); font-style: italic; line-height: 1.5; }
+
+@media (max-width: 500px) {
+  .nutri-grid { grid-template-columns: 1fr; }
+  .analysis { grid-template-columns: 1fr; }
+  .stats { flex-wrap: wrap; }
+  .stat { min-width: 50%; border-bottom: 1px solid var(--gray2); }
+  .tabs { gap: 5px; }
+  .tab-btn { font-size: 0.78rem; padding: 11px 5px; }
+}
+
+/* WELCOME SPLASH */
+#welcome-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(24px, env(safe-area-inset-top)) 28px max(24px, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse 85% 55% at 50% 18%, rgba(232,255,71,0.14) 0%, transparent 52%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(71,212,255,0.06) 0%, transparent 45%),
+    var(--bg);
+  cursor: pointer;
+  transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+#welcome-splash:focus { outline: none; }
+#welcome-splash.welcome-exit {
+  opacity: 0;
+  transform: scale(1.03);
+  filter: blur(6px);
+  pointer-events: none;
+}
+.welcome-inner {
+  text-align: center;
+  max-width: 22rem;
+  pointer-events: none;
+}
+.welcome-line1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 9vw, 3.75rem);
+  letter-spacing: 0.05em;
+  color: var(--white);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: welcomeIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+}
+.welcome-line1 .accent { color: var(--accent); }
+.welcome-line2 {
+  margin-top: 16px;
+  font-size: clamp(1rem, 3.6vw, 1.2rem);
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 1.45;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: welcomeIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.42s forwards;
+}
+.welcome-bar {
+  height: 3px;
+  width: 0;
+  margin: 24px auto 0;
+  background: linear-gradient(90deg, var(--accent), var(--blue));
+  border-radius: 2px;
+  max-width: 140px;
+  animation: welcomeBar 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.32s forwards;
+}
+.welcome-hint {
+  margin-top: 32px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--gray2);
+  opacity: 0;
+  animation: welcomeIn 0.55s ease 0.95s forwards;
+}
+@keyframes welcomeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes welcomeBar {
+  to { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #welcome-splash { transition: opacity 0.25s ease; }
+  #welcome-splash.welcome-exit { transform: none; filter: none; }
+  #welcome-splash .welcome-line1,
+  #welcome-splash .welcome-line2,
+  #welcome-splash .welcome-hint {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  #welcome-splash .welcome-bar {
+    animation: none;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="welcome-splash" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-sub" hidden>
+  <div class="welcome-inner">
+    <p class="welcome-line1" id="welcome-title">Bienvenue, <span class="accent">Enzo</span></p>
+    <p class="welcome-line2" id="welcome-sub">Prêt à t'entraîner ? On enchaîne.</p>
+    <div class="welcome-bar" aria-hidden="true"></div>
+    <p class="welcome-hint">Appuyer pour continuer</p>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Programme Personnalisé · Analyse Physique · Ajusté</div>
+  <h1 class="hero-title">
+    <span class="line1">PROGRAMME</span>
+    <span class="line2">ENZO V2</span>
+  </h1>
+  <p class="hero-sub">Basé sur l'analyse de tes photos : priorité absolue sur la <strong style="color:var(--accent)">poitrine</strong>, les <strong style="color:var(--accent)">épaules</strong> et le <strong style="color:var(--accent)">V-taper</strong> pour transformer ta silhouette.</p>
+
+  <div class="analysis">
+    <div class="analysis-col plus">
+      <h3>✓ Déjà bien développé</h3>
+      <ul>
+        <li>Trapèzes & haut du dos</li>
+        <li>Bras & biceps</li>
+        <li>Structure épaules larges</li>
+        <li>Ventre plat, base propre</li>
+      </ul>
+    </div>
+    <div class="analysis-col focus">
+      <h3>→ Priorités à développer</h3>
+      <ul>
+        <li>Poitrine (priorité n°1)</li>
+        <li>Épaules / deltoïdes ronds</li>
+        <li>Grand dorsal (V-taper)</li>
+        <li>Gras lombaire à affiner</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-val">7</span><span class="stat-label">Sem. cali</span></div>
+    <div class="stat"><span class="stat-val">10</span><span class="stat-label">Sem. salle</span></div>
+    <div class="stat"><span class="stat-val">6j</span><span class="stat-label">/ semaine</span></div>
+    <div class="stat"><span class="stat-val">+30%</span><span class="stat-label">Volume pec/épaules</span></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(0)">BLOC 1<small>Cali · now→22 juin</small></button>
+  <button class="tab-btn gym" onclick="switchTab(1)">BLOC 2<small>Salle · 22 juin→31 août</small></button>
+  <button class="tab-btn" onclick="switchTab(2)">NUTRITION<small>Toute la période</small></button>
+</div>
+
+<div class="main">
+
+  <!-- ====== BLOC 1 ====== -->
+  <div class="tab-content active" id="tab-0">
+    <div class="phase-hd">
+      <div>
+        <h2>BLOC 1 — CALISTHENICS</h2>
+        <p>Now → 22 juin · 7 semaines · Volume augmenté sur poitrine & épaules · HIIT lombaire le samedi</p>
+      </div>
+      <span class="badge badge-cali">POIDS DE CORPS</span>
+    </div>
+
+    <div class="priority-banner">
+      <strong>⚡ Ajustement clé :</strong> Le volume Push (poitrine + épaules) passe à <strong>2 séances dédiées par semaine</strong> au lieu d'une. Les exercices de poitrine sont mis en premier dans chaque séance pour les attaquer frais. Nouveau : séance "Épaules spéciale" le jeudi.
+    </div>
+
+    <div class="section-title">Semaine type — 6 jours</div>
+    <div class="week">
+
+      <!-- LUNDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-push"></div>
+          <div class="day-info">
+            <div class="day-name">Poitrine Focus <span style="font-size:0.7rem;color:var(--accent)">★ PRIORITÉ</span></div>
+            <div class="day-type">Push A — Lundi</div>
+          </div>
+          <span class="day-wd">LUN</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">POITRINE — Volume maximum</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pompes Archer</div><div class="exo-tip">Charge unilatérale → poitrine en étirement maximal</div></div><div class="exo-sets">5 × 8/côté</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pompes déclinées (pieds hauts)</div><div class="exo-tip">Poitrine haute et claviculaire — zone la plus visible</div></div><div class="exo-sets">4 × 14</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pompes inclinées (mains hautes)</div><div class="exo-tip">Poitrine basse, sillon pectoral</div></div><div class="exo-sets">4 × 14</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pompes larges tempo 4-0-1</div><div class="exo-tip">4 sec descente, 0 bas, 1 montée → déchirure musculaire</div></div><div class="exo-sets">3 × 10</div></div>
+          <div class="exo-group-label">TRICEPS — Finisher</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Pompes Diamant</div><div class="exo-tip">Verrouiller les coudes au corps</div></div><div class="exo-sets">3 × 12</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Dips entre chaises</div><div class="exo-tip">Amplitude maximale, lent</div></div><div class="exo-sets">3 × 12</div></div>
+        </div>
+      </div>
+
+      <!-- MARDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-pull"></div>
+          <div class="day-info">
+            <div class="day-name">Dos large — V-Taper</div>
+            <div class="day-type">Pull A — Mardi</div>
+          </div>
+          <span class="day-wd">MAR</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">GRAND DORSAL — V-taper prioritaire</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Tractions prise large pronation</div><div class="exo-tip">Prise extra-large → grand dorsal max → V-taper</div></div><div class="exo-sets">5 × max</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Tractions neutres (prise serrée)</div><div class="exo-tip">Épaisseur dos + biceps</div></div><div class="exo-sets">4 × max</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Australian Pull-up</div><div class="exo-tip">Table basse, dos mid</div></div><div class="exo-sets">3 × 15</div></div>
+          <div class="exo-group-label">BICEPS & DOS BAS</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Superman isométrique</div><div class="exo-tip">Tenir 3 sec en haut</div></div><div class="exo-sets">3 × 12</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Curl isométrique serviette</div><div class="exo-tip">Résistance manuelle</div></div><div class="exo-sets">3 × 30 sec</div></div>
+        </div>
+      </div>
+
+      <!-- MERCREDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-legs"></div>
+          <div class="day-info">
+            <div class="day-name">Jambes & Core</div>
+            <div class="day-type">Mercredi</div>
+          </div>
+          <span class="day-wd">MER</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">JAMBES</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Squat bulgare</div><div class="exo-tip">Pied arrière surélevé, 2 sec bas</div></div><div class="exo-sets">4 × 10/jambe</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Squat Pistol assisté</div><div class="exo-tip">Progressif, main sur mur</div></div><div class="exo-sets">3 × 6/jambe</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Fentes sautées</div><div class="exo-tip">Explosif, cardio jambes</div></div><div class="exo-sets">3 × 12/jambe</div></div>
+          <div class="exo-group-label">CORE — Lombaires ciblés</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Planche latérale + rotation</div><div class="exo-tip">Obliques + lombaires → brûle le gras ciblé</div></div><div class="exo-sets">4 × 40 sec/côté</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Dragon Flag négatif</div><div class="exo-tip">5 sec descente, core absolu</div></div><div class="exo-sets">4 × 5</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Vacuum abdominal</div><div class="exo-tip">Aspirer le ventre 30 sec — taille</div></div><div class="exo-sets">4 × 30 sec</div></div>
+        </div>
+      </div>
+
+      <!-- JEUDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-push"></div>
+          <div class="day-info">
+            <div class="day-name">Épaules Spéciale <span style="font-size:0.7rem;color:var(--accent)">★ PRIORITÉ</span></div>
+            <div class="day-type">Push B — Jeudi · NOUVEAU</div>
+          </div>
+          <span class="day-wd">JEU</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">DELTOÏDES — Épaules rondes & larges</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pike Push-up décliné</div><div class="exo-tip">Pieds sur chaise, deltoïde antérieur</div></div><div class="exo-sets">5 × 12</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">HSPU partiel contre mur</div><div class="exo-tip">Amplitude croissante chaque semaine</div></div><div class="exo-sets">4 × 6</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Handstand statique</div><div class="exo-tip">Tenir 30 sec — épaules sous tension isométrique</div></div><div class="exo-sets">3 × 30 sec</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Pike Push-up explosif</div><div class="exo-tip">Poussée explosive — puissance deltoïde</div></div><div class="exo-sets">3 × 8</div></div>
+          <div class="exo-group-label">POITRINE — 2ème passage</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Pompes lentes tempo 5-2-1</div><div class="exo-tip">5s descente, 2s bas, 1s montée</div></div><div class="exo-sets">3 × 8</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Dips lestés (sac à dos)</div><div class="exo-tip">5–8kg dans sac, chest dip</div></div><div class="exo-sets">4 × 10</div></div>
+        </div>
+      </div>
+
+      <!-- VENDREDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-pull"></div>
+          <div class="day-info">
+            <div class="day-name">Dos & Force</div>
+            <div class="day-type">Pull B — Vendredi</div>
+          </div>
+          <span class="day-wd">VEN</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">FORCE MAXIMALE</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Tractions lestées (sac 8kg)</div><div class="exo-tip">Force pure — progression semaine par semaine</div></div><div class="exo-sets">5 × 5</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">L-sit Pull-up</div><div class="exo-tip">Core + grand dorsal combo</div></div><div class="exo-sets">3 × 5</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Muscle-up transition</div><div class="exo-tip">Barre basse, travail de transition</div></div><div class="exo-sets">4 × 4</div></div>
+          <div class="exo-group-label">ISOLATION & CORE</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">L-sit statique</div><div class="exo-tip">Sur 2 chaises</div></div><div class="exo-sets">4 × 15 sec</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Windshield Wipers</div><div class="exo-tip">Pendu barre, rotation hanches</div></div><div class="exo-sets">3 × 8/côté</div></div>
+        </div>
+      </div>
+
+      <!-- SAMEDI -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-hiit"></div>
+          <div class="day-info">
+            <div class="day-name">HIIT — Brûle-graisses lombaire</div>
+            <div class="day-type">Samedi · Définition</div>
+          </div>
+          <span class="day-wd">SAM</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">TABATA × 3 BLOCS (repos 60 sec entre blocs)</div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Tabata Burpees</div><div class="exo-tip">20s on / 10s off × 8 rounds</div></div><div class="exo-sets">4 min</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Tabata Squat Jump</div><div class="exo-tip">20s on / 10s off × 8 rounds</div></div><div class="exo-sets">4 min</div></div>
+          <div class="exo"><div class="exo-left"><div class="exo-name">Tabata Mountain Climbers</div><div class="exo-tip">20s on / 10s off × 8 rounds</div></div><div class="exo-sets">4 min</div></div>
+          <div class="exo-group-label">FINISHER LOMBAIRES</div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Planche latérale dynamique</div><div class="exo-tip">Hanche qui monte/descend — obliques & lombaires</div></div><div class="exo-sets">4 × 20/côté</div></div>
+          <div class="exo priority-exo"><div class="exo-left"><div class="exo-name">Vacuum abdominal debout</div><div class="exo-tip">Aspiration max, tenir 30 sec</div></div><div class="exo-sets">5 × 30 sec</div></div>
+        </div>
+      </div>
+
+      <!-- DIMANCHE -->
+      <div class="day rest-day">
+        <div class="day-hd">
+          <div class="day-dot dot-rest"></div>
+          <div class="day-info"><div class="day-name">Repos complet</div><div class="day-type">Dimanche — 8h sommeil, stretching léger</div></div>
+          <span class="day-wd">DIM</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-title">Progression 7 semaines</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="meal"><div class="meal-icon">📈</div><div><h4>Sem. 1–2</h4><p>Respecter les volumes. Forme > intensité. Apprendre le tempo sur les pompes.</p></div></div>
+      <div class="meal"><div class="meal-icon">⚡</div><div><h4>Sem. 3–4</h4><p>+2 reps sur chaque set. Réduire repos de 15 sec. Ajouter lest (sac) sur tractions/dips.</p></div></div>
+      <div class="meal"><div class="meal-icon">🔥</div><div><h4>Sem. 5–6</h4><p>Variantes les plus dures (Archer, HSPU, Dragon Flag). Volume +10%.</p></div></div>
+      <div class="meal"><div class="meal-icon">🏛️</div><div><h4>Sem. 7</h4><p>Décharge : volume −30%. Repos actif. Corps prêt à attaquer la salle.</p></div></div>
+    </div>
+  </div>
+
+  <!-- ====== BLOC 2 SALLE ====== -->
+  <div class="tab-content" id="tab-1">
+    <div class="phase-hd">
+      <div>
+        <h2>BLOC 2 — SALLE</h2>
+        <p>22 juin → 31 août · PPL × 2 · Poitrine & épaules en priorité · Charges lourdes + isolation</p>
+      </div>
+      <span class="badge badge-gym">MUSCULATION</span>
+    </div>
+
+    <div class="trans-note">
+      <strong>⚡ Transition :</strong> Tes 7 semaines de cali t'auront donné une base neuromusculaire solide. Tu vas progresser très vite. Semaines 1–2 salle : commence à 65% de ta charge max pour ajuster la forme. La poitrine et les épaules sont en tête de chaque séance Push.
+    </div>
+
+    <div class="section-title">PPL × 2 — 6 jours</div>
+    <div class="week">
+
+      <!-- LUNDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-push"></div>
+          <div class="day-info">
+            <div class="day-name">Push A — Poitrine <span style="font-size:0.7rem;color:var(--red)">★ PRIO</span></div>
+            <div class="day-type">Lundi</div>
+          </div>
+          <span class="day-wd">LUN</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">POITRINE — Charge lourde d'abord</div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Développé couché barre</div><div class="exo-tip">Mouvement roi, 3 sec descente, charge progressive</div></div><div class="exo-sets red">5 × 5</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Développé incliné haltères 30°</div><div class="exo-tip">Poitrine haute = zone à développer</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Écarté câble croisé</div><div class="exo-tip">Contraction max en fin — sillon pectoral</div></div><div class="exo-sets red">4 × 12</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Peck Deck machine</div><div class="exo-tip">Isolation pure poitrine</div></div><div class="exo-sets red">3 × 15</div></div>
+          <div class="exo-group-label">TRICEPS</div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Extensions triceps câble corde</div><div class="exo-tip">Coudes fixes, contraction finale</div></div><div class="exo-sets red">3 × 12</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Dips lestés ceinture</div><div class="exo-tip">Amplitude max, chest dip</div></div><div class="exo-sets red">3 × 10</div></div>
+        </div>
+      </div>
+
+      <!-- MARDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-pull"></div>
+          <div class="day-info">
+            <div class="day-name">Pull A — Dos large V-taper</div>
+            <div class="day-type">Mardi</div>
+          </div>
+          <span class="day-wd">MAR</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">GRAND DORSAL — V-taper</div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Tractions lestées prise large</div><div class="exo-tip">Ta base cali + lest = combo OP</div></div><div class="exo-sets red">5 × 6</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Tirage nuque machine prise large</div><div class="exo-tip">Grand dorsal large → V-taper</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Tirage horizontal câble</div><div class="exo-tip">Omoplates serrées en fin</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Pull-over câble</div><div class="exo-tip">Grand dorsal isolation</div></div><div class="exo-sets red">3 × 12</div></div>
+          <div class="exo-group-label">BICEPS</div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Curl barre EZ</div><div class="exo-tip">Supination stricte</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Curl marteau haltères</div><div class="exo-tip">Brachial + avant-bras</div></div><div class="exo-sets red">3 × 12</div></div>
+        </div>
+      </div>
+
+      <!-- MERCREDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-legs"></div>
+          <div class="day-info">
+            <div class="day-name">Legs A — Quad & Core</div>
+            <div class="day-type">Mercredi</div>
+          </div>
+          <span class="day-wd">MER</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Squat barre</div><div class="exo-tip">Profondeur totale, dos droit</div></div><div class="exo-sets red">5 × 5</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Leg Press</div><div class="exo-tip">Pieds hauts = ischio/fessiers</div></div><div class="exo-sets red">4 × 12</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Fentes marchées haltères</div><div class="exo-tip">Stabilité + quad</div></div><div class="exo-sets red">3 × 10/jambe</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Extension quad machine</div><div class="exo-tip">Isolation finale</div></div><div class="exo-sets red">3 × 15</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Mollets à la presse</div><div class="exo-tip">Amplitude totale</div></div><div class="exo-sets red">5 × 15</div></div>
+          <div class="exo-group-label">CORE LOMBAIRE</div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Planche latérale dynamique</div><div class="exo-tip">Lombaires + obliques</div></div><div class="exo-sets red">4 × 20/côté</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Dragon Flag</div><div class="exo-tip">Sur banc de musculation</div></div><div class="exo-sets red">3 × 6</div></div>
+        </div>
+      </div>
+
+      <!-- JEUDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-push"></div>
+          <div class="day-info">
+            <div class="day-name">Push B — Épaules <span style="font-size:0.7rem;color:var(--red)">★ PRIO</span></div>
+            <div class="day-type">Jeudi</div>
+          </div>
+          <span class="day-wd">JEU</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo-group-label">ÉPAULES — Deltoïdes ronds & larges</div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Développé militaire barre</div><div class="exo-tip">Debout, core gainage, charge lourde</div></div><div class="exo-sets red">4 × 6–8</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Élévations latérales haltères</div><div class="exo-tip">3 séries ! C'est ce qui élargit les épaules visuellement</div></div><div class="exo-sets red">5 × 15</div></div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Arnold Press haltères</div><div class="exo-tip">3 déltoïdes en 1 mouvement</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Élévations frontales câble</div><div class="exo-tip">Deltoïde antérieur</div></div><div class="exo-sets red">3 × 12</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Face Pull câble</div><div class="exo-tip">Deltoïde postérieur + posture</div></div><div class="exo-sets red">4 × 15</div></div>
+          <div class="exo-group-label">POITRINE — 2ème passage</div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Développé couché incliné haltères</div><div class="exo-tip">Poitrine haute</div></div><div class="exo-sets red">3 × 12</div></div>
+          <div class="exo-group-label">TRICEPS</div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Skull Crusher EZ</div><div class="exo-tip">Long chef triceps</div></div><div class="exo-sets red">3 × 12</div></div>
+        </div>
+      </div>
+
+      <!-- VENDREDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-pull"></div>
+          <div class="day-info">
+            <div class="day-name">Pull B — Force & Épaisseur</div>
+            <div class="day-type">Vendredi</div>
+          </div>
+          <span class="day-wd">VEN</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Soulevé de terre conventionnel</div><div class="exo-tip">Force absolue — charge max sécurisée</div></div><div class="exo-sets red">4 × 4</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Rowing barre</div><div class="exo-tip">Épaisseur dos, dos plat</div></div><div class="exo-sets red">4 × 8</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Rowing haltère unilatéral</div><div class="exo-tip">Étirement maximal, contraction forte</div></div><div class="exo-sets red">3 × 10/côté</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Curl concentré haltère</div><div class="exo-tip">Pic biceps — isolation</div></div><div class="exo-sets red">3 × 12/côté</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Curl cable basse poulie</div><div class="exo-tip">Angle différent, étirement long</div></div><div class="exo-sets red">3 × 12</div></div>
+        </div>
+      </div>
+
+      <!-- SAMEDI SALLE -->
+      <div class="day" onclick="tog(this)">
+        <div class="day-hd">
+          <div class="day-dot dot-legs"></div>
+          <div class="day-info">
+            <div class="day-name">Legs B — Ischio & Cardio</div>
+            <div class="day-type">Samedi</div>
+          </div>
+          <span class="day-wd">SAM</span>
+          <span class="day-arrow">▾</span>
+        </div>
+        <div class="exos">
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Hip Thrust barre</div><div class="exo-tip">Fessiers — look athlétique complet</div></div><div class="exo-sets red">4 × 10</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Soulevé de terre roumain</div><div class="exo-tip">Ischio-jambiers, dos droit</div></div><div class="exo-sets red">4 × 8</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Leg Curl allongé machine</div><div class="exo-tip">Isolation ischio</div></div><div class="exo-sets red">3 × 12</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Fentes bulgares haltères</div><div class="exo-tip">Finisseur jambes</div></div><div class="exo-sets red">3 × 10/jambe</div></div>
+          <div class="exo gym-exo"><div class="exo-left"><div class="exo-name">Mollets debout machine</div><div class="exo-tip">Amplitude totale, 2 sec bas</div></div><div class="exo-sets red">5 × 15</div></div>
+          <div class="exo-group-label">CARDIO FINISHER — Gras lombaire</div>
+          <div class="exo priority-exo gym-exo"><div class="exo-left"><div class="exo-name">Tapis de course HIIT</div><div class="exo-tip">20 min : 1 min sprint / 1 min marche</div></div><div class="exo-sets red">20 min</div></div>
+        </div>
+      </div>
+
+      <div class="day rest-day">
+        <div class="day-hd">
+          <div class="day-dot dot-rest"></div>
+          <div class="day-info"><div class="day-name">Repos complet</div><div class="day-type">Dimanche — Récupération, 8h sommeil</div></div>
+          <span class="day-wd">DIM</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== NUTRITION ====== -->
+  <div class="tab-content" id="tab-2">
+    <div class="phase-hd">
+      <div>
+        <h2>NUTRITION</h2>
+        <p>72.5kg · 173cm · Recomposition : masse sèche + affiner le gras lombaire simultanément</p>
+      </div>
+      <span class="badge badge-cali">TOUTE LA PÉRIODE</span>
+    </div>
+
+    <div class="suppl-block">
+      <h3>⚗️ Suppléments</h3>
+      <div class="suppl-row"><div class="suppl-name">Whey Isolate</div><div class="suppl-when">Dans les 30 min post-training</div><div class="suppl-dose">25–30g</div></div>
+      <div class="suppl-row"><div class="suppl-name">Créatine Monohydrate</div><div class="suppl-when">Tous les jours, même repos</div><div class="suppl-dose">5g</div></div>
+      <div class="suppl-row"><div class="suppl-name">Vitamine D3</div><div class="suppl-when">Matin avec repas gras</div><div class="suppl-dose">3000 UI</div></div>
+      <div class="suppl-row"><div class="suppl-name">Magnésium Bisglycinate</div><div class="suppl-when">Soir avant de dormir</div><div class="suppl-dose">300mg</div></div>
+    </div>
+
+    <div class="macro-block">
+      <h3>MACROS — Jours d'entraînement</h3>
+      <div class="macro-row">
+        <div class="macro-label"><span>Protéines</span><span>~145g · 580 kcal</span></div>
+        <div class="bar-bg"><div class="bar-fill bar-p"></div></div>
+      </div>
+      <div class="macro-row">
+        <div class="macro-label"><span>Glucides</span><span>~200g · 800 kcal</span></div>
+        <div class="bar-bg"><div class="bar-fill bar-g"></div></div>
+      </div>
+      <div class="macro-row">
+        <div class="macro-label"><span>Lipides</span><span>~65g · 585 kcal</span></div>
+        <div class="bar-bg"><div class="bar-fill bar-f"></div></div>
+      </div>
+      <p class="macro-note">≈ 2000–2050 kcal/jour · Léger déficit pour affiner le gras lombaire sans casser le muscle · Jours repos : retirer 100–150 kcal de glucides</p>
+    </div>
+
+    <div class="nutri-grid">
+      <div class="nutri-card">
+        <h3>🥩 Protéines</h3>
+        <ul>
+          <li>Poulet / dinde 150–200g</li>
+          <li>Œufs entiers (3–4/jour)</li>
+          <li>Thon, saumon, cabillaud</li>
+          <li>Fromage blanc 0%</li>
+          <li>Whey post-training</li>
+        </ul>
+      </div>
+      <div class="nutri-card">
+        <h3>⚡ Glucides</h3>
+        <ul>
+          <li>Avoine le matin</li>
+          <li>Riz basmati, patate douce</li>
+          <li>Banane pré-training</li>
+          <li>Fruits rouges (antioxydants)</li>
+          <li>Réduire le soir</li>
+        </ul>
+      </div>
+      <div class="nutri-card">
+        <h3>🫒 Lipides</h3>
+        <ul>
+          <li>Huile d'olive</li>
+          <li>Avocat (½/jour)</li>
+          <li>Noix & amandes</li>
+          <li>Jaune d'œuf</li>
+          <li>Saumon (oméga-3)</li>
+        </ul>
+      </div>
+      <div class="nutri-card">
+        <h3>🚫 Bannir</h3>
+        <ul>
+          <li>Alcool (−25% testostérone)</li>
+          <li>Ultra-transformé</li>
+          <li>Sucres simples hors training</li>
+          <li>Sauter post-training</li>
+          <li>Moins de 7h sommeil</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Journée type</div>
+    <div class="meal-list">
+      <div class="meal"><div class="meal-icon">🌅</div><div><h4>Petit-déjeuner</h4><p>80g avoine + 4 œufs brouillés + 1 banane + café · ~550 kcal</p></div></div>
+      <div class="meal"><div class="meal-icon">💪</div><div><h4>Pré-training (30 min avant)</h4><p>1 banane + 5g créatine + eau · Énergie rapide</p></div></div>
+      <div class="meal"><div class="meal-icon">⚡</div><div><h4>Post-training immédiat</h4><p>Shaker whey isolate 25–30g · Fenêtre anabolique</p></div></div>
+      <div class="meal"><div class="meal-icon">🍽️</div><div><h4>Déjeuner</h4><p>150g poulet + 150g riz + légumes verts + huile d'olive · ~550 kcal</p></div></div>
+      <div class="meal"><div class="meal-icon">🥗</div><div><h4>Dîner</h4><p>200g saumon ou steak + patate douce + salade + fromage blanc 0% · ~500 kcal</p></div></div>
+      <div class="meal"><div class="meal-icon">🌙</div><div><h4>Avant coucher</h4><p>300mg magnésium + 200g fromage blanc (caséine lente) · récupération nocturne</p></div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(i) {
+  document.querySelectorAll('.tab-content').forEach((el, j) => el.classList.toggle('active', i === j));
+  document.querySelectorAll('.tab-btn').forEach((el, j) => el.classList.toggle('active', i === j));
+}
+function tog(card) {
+  if (card.classList.contains('rest-day')) return;
+  card.classList.toggle('open');
+}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () {});
+  });
+}
+
+(function welcomeSplash() {
+  var el = document.getElementById('welcome-splash');
+  if (!el) return;
+  if (sessionStorage.getItem('sportWelcome')) {
+    el.remove();
+    return;
+  }
+  el.removeAttribute('hidden');
+  el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: true });
+  document.body.style.overflow = 'hidden';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var autoMs = reduced ? 900 : 3200;
+  var closed = false;
+  var ended = false;
+  function done() {
+    if (ended) return;
+    ended = true;
+    el.remove();
+    document.body.style.overflow = '';
+    sessionStorage.setItem('sportWelcome', '1');
+    window.removeEventListener('keydown', onKey);
+  }
+  function close() {
+    if (closed) return;
+    closed = true;
+    el.classList.add('welcome-exit');
+    el.addEventListener('transitionend', function te(ev) {
+      if (ev.propertyName === 'opacity') {
+        el.removeEventListener('transitionend', te);
+        done();
+      }
+    });
+    setTimeout(done, reduced ? 320 : 700);
+  }
+  function onKey(e) {
+    if (e.key === 'Escape') close();
+  }
+  el.addEventListener('click', close);
+  window.addEventListener('keydown', onKey);
+  setTimeout(close, autoMs);
+})();
+</script>
+</body>
+</html>
