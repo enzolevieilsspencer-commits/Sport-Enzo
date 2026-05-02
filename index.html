@@ -1208,7 +1208,6 @@ if ('serviceWorker' in navigator) {
   el.focus({ preventScroll: true });
   document.body.style.overflow = 'hidden';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var autoMs = reduced ? 900 : 3200;
   var closed = false;
   var ended = false;
   function done() {
@@ -1236,7 +1235,6 @@ if ('serviceWorker' in navigator) {
   }
   el.addEventListener('click', close);
   window.addEventListener('keydown', onKey);
-  setTimeout(close, autoMs);
 })();
 </script>
 </body>
